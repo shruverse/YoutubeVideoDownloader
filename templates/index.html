@@ -32,13 +32,16 @@
               <div class="gray-box mx-2 d-flex align-items-center">
                 <img class="thumbnail" id="thumbnail" src="/static/thumbnail.webp" alt="thumbnail" />
                 <div class="description">
-                    <h3 id="videoTitle">Video Title</h3>
-                </div>
+                  <h3 id="videoTitle">Video Title</h3>
+                  <p>Approximate download size in MB: <h6 id="file_size_mb">Filesize</h6></p>
+              </div>
             </div>
           </form>
+          <form action="" method="POST">
               <div class="col-lg-2 col-md-4 col-sm-6 my-button">
-              <button type="button" name="download" class="button btn-primary">download</button>
+              <button type="button" name="downloadButton" class="button btn-primary">download</button>
               </div>
+            </form>
           </div>
       </div>
 </div>
@@ -59,6 +62,7 @@
           .then(data => {
               document.getElementById('thumbnail').src = data.thumbnail_url;
               document.getElementById('videoTitle').innerText = data.title;
+              document.getElementById('file_size_mb').innerText = data.file_size_mb;
           })
           .catch(error => console.error('Error:', error));
       });
