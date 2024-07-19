@@ -46,7 +46,9 @@ def download_video():
             info_dict = ydl.extract_info(url, download=False)
             video_title = info_dict.get('title', None)
             video_ext = info_dict.get('ext', 'mp4')
+            output_path = ydl.prepare_filename(info_dict)
             ydl.download([url])
+            os.utime(output_path, None)
         return jsonify({'message': 'Download started', 'title': video_title, 'ext': video_ext})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
