@@ -71,6 +71,7 @@
       event.preventDefault();
         var url = document.getElementById('video_url').value;
         var messageDiv = document.getElementById('message');
+        messageDiv.innerText = 'Your video downloading process has started...';
           fetch('/download', {
             method: 'POST',
               headers: {
@@ -83,7 +84,7 @@
             if (data.error) {
               messageDiv.innerText = `Error: ${data.error}`;
             } else {
-              messageDiv.innerText = `Download started for ${data.title}.${data.ext}`;
+              messageDiv.innerText = `Download completed for ${data.title}.${data.ext}`;
             }
           })
           .catch(error => {
