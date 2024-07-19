@@ -19,7 +19,7 @@ This is a user-friendly Youtube video downloader built with Python (Flask framew
 1. Make sure you have Python 3 installed (https://www.python.org/downloads/).
 2. Install the required libraries:
 ```bash
-  pip install flask pytube yt-dlp
+  pip install flask pytube yt-dlp os
 ```
 3. Clone or download this repository.
 
