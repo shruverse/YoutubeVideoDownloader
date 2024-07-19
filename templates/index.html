@@ -28,6 +28,7 @@
                   <input type="text" class="form-control" id="video_url" name="video_url" placeholder="Paste your youtube video link here.">
                   <button class="button" id="searchButton" type="button">GO</button>
                 </div>
+                <p class="disclaimer">Disclaimer: The video gets downloaded in the best quality available, please check the size in MB by clicking GO before starting your downlaod. Enjoy!</p>
               </div>
               <div class="gray-box d-flex align-items-center">
                 <img class="thumbnail" id="thumbnail" src="/static/thumbnail.webp" alt="thumbnail" />
@@ -84,7 +85,7 @@
             if (data.error) {
               messageDiv.innerText = `Error: ${data.error}`;
             } else {
-              messageDiv.innerText = `Download completed for ${data.title}.${data.ext}`;
+              messageDiv.innerText = `👍Download completed for ${data.title}.${data.ext}`;
             }
           })
           .catch(error => {

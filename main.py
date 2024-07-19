@@ -21,6 +21,8 @@ def home():
 @app.route('/search', methods=['POST'])
 def search():
     video_url = request.get_json().get('video_url')
+    if not video_url:
+        return jsonify({'error': 'No URL provided'}), 400
     try:
         yt = YouTube(video_url)
         response = {
@@ -29,7 +31,6 @@ def search():
             'file_size_mb': estimate_file_size(yt.length)
         }
         return jsonify(response)
-
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
