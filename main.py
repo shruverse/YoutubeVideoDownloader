@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify
 from pytube import YouTube
+import os
+import yt_dlp
 
 app = Flask(__name__)
 
+DOWNLOAD_FOLDER = os.path.join(os.path.expanduser('~'), 'Downloads')
 
 def estimate_file_size(duration, bitrate_kbps=8000):
     duration_seconds = int(duration)
@@ -30,7 +33,23 @@ def search():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-
+@app.route('/download', methods=['POST'])
+def download_video():
+    url = request.json.get('url')
+    if not url:
+        return jsonify({'error': 'No URL provided'}), 400
+    try:
+        ydl_opts = {
+            'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(url, download=False)
+            video_title = info_dict.get('title', None)
+            video_ext = info_dict.get('ext', 'mp4')
+            ydl.download([url])
+        return jsonify({'message': 'Download started', 'title': video_title, 'ext': video_ext})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

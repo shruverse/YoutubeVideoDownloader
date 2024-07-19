@@ -36,10 +36,13 @@
                   <p>Approximate download size in MB: <h6 id="file_size_mb">Filesize</h6></p>
               </div>
             </div>
+            </form>
+            <form id="downlaodForm">
             <div class="col-lg-2 col-md-4 col-sm-6 mt-4">
-              <button type="button" name="downloadButton" class="button">download</button>
+              <button type="submit" name="downloadButton" class="button">download</button>
               </div>
             </form>
+            <div id="message"></div>
           </div>
       </div>
 </div>
@@ -47,22 +50,45 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('searchButton').addEventListener('click', function() {
-          var videoUrl = document.getElementById('video_url').value;
-          fetch('/search', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ video_url: videoUrl })
+    document.getElementById('searchButton').addEventListener('click', function() {
+      var videoUrl = document.getElementById('video_url').value;
+        fetch('/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ video_url: videoUrl })
           })
           .then(response => response.json())
           .then(data => {
-              document.getElementById('thumbnail').src = data.thumbnail_url;
-              document.getElementById('videoTitle').innerText = data.title;
-              document.getElementById('file_size_mb').innerText = data.file_size_mb;
+            document.getElementById('thumbnail').src = data.thumbnail_url;
+            document.getElementById('videoTitle').innerText = data.title;
+            document.getElementById('file_size_mb').innerText = data.file_size_mb;
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    document.getElementById('downlaodForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+        var url = document.getElementById('video_url').value;
+        var messageDiv = document.getElementById('message');
+          fetch('/download', {
+            method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ url: url }),
           })
-          .catch(error => console.error('Error:', error));
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              messageDiv.innerText = `Error: ${data.error}`;
+            } else {
+              messageDiv.innerText = `Download started for ${data.title}.${data.ext}`;
+            }
+          })
+          .catch(error => {
+            messageDiv.innerText = `Error: ${error}`;
+        });
       });
   });
 </script>
