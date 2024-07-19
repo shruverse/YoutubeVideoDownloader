@@ -2,6 +2,7 @@
 
 This is a user-friendly Youtube video downloader built with Python (Flask framework) and Javascript for a seamless in-page video information and download experience.
 ## Table of Contents
+- [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
